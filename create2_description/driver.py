@@ -32,7 +32,10 @@ class iRobotCreateDriver(WebotsDifferentialDriveNode):
             wheel_radius=0.036
         )
         self.start_device_manager({
-            'robot': {'publish_base_footprint': True},
+            'robot': {
+                'publish_base_footprint': True,
+                'publish_robot_description': True,
+            },
             'RPLidar': {'topic_name': '/scan'},
             'accelerometer+gyro': {'frame_id': 'imu_link', 'topic_name': '/imu'},
             'kinect color': {'topic_name': '/camera'},

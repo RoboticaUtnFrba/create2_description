@@ -16,8 +16,11 @@ data_files.append((os.path.join('share', package_name, 'launch'), glob('launch/*
 # World files
 data_files.append((os.path.join('share', package_name, 'worlds'), glob('worlds/*.wb*')))
 data_files.append((os.path.join('share', package_name, 'worlds/textures'), glob('worlds/textures/*')))
-# Confgiration file
-data_files.append(('share/' + package_name + '/resource', ['resource/irobot_create_2.yaml']))
+# Configuration files
+data_files.append(('share/' + package_name + '/resource', [
+    'resource/irobot_create_2.yaml',
+    'resource/bringup.rviz',
+]))
 # Proto
 data_files.append((os.path.join('share', package_name, 'protos'), glob('protos/*.proto')))
 data_files.append((os.path.join('share', package_name, 'protos/textures'), glob('protos/textures/*.jpg')))

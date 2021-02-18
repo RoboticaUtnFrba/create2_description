@@ -25,45 +25,59 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch.substitutions.path_join_substitution import PathJoinSubstitution
 from launch_ros.actions import Node
-import os
 
 
 def generate_launch_description():
     package_dir = get_package_share_directory('create2_description')
+    webots_core_dir = get_package_share_directory('webots_ros2_core')
+
     world = LaunchConfiguration('world')
+    use_rviz = LaunchConfiguration('use_rviz')
+
+    rviz_config = PathJoinSubstitution([package_dir, 'resource', 'bringup.rviz'])
+    create_parameters = PathJoinSubstitution([package_dir, 'resource', 'irobot_create_2.yaml'])
+
+
+    world_arg = DeclareLaunchArgument(
+        'world',
+        default_value='small_room.wbt',
+        description='Choose one of the world files from `/create2_description/worlds` directory'
+    )
+
+    use_rviz_arg = DeclareLaunchArgument(
+        'use_rviz',
+        default_value='True',
+        description='Whether to bringup RViz2 or not'
+    )
 
     webots = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(get_package_share_directory('webots_ros2_core'), 'launch', 'robot_launch.py')
+            PathJoinSubstitution([webots_core_dir, 'launch', 'robot_launch.py'])
         ),
         launch_arguments={
             'package': 'create2_description',
             'executable': 'driver',
             'world': PathJoinSubstitution([package_dir, 'worlds', world]),
-            'node_parameters': os.path.join(package_dir, 'resource', 'irobot_create_2.yaml'),
+            'node_parameters': create_parameters,
             'robot_name': '',
             'use_sim_time': 'True',
             'publish_tf': 'True',
         }.items()
     )
 
-    # Rviz node
-    use_rviz = LaunchConfiguration('rviz', default=False)
-    # rviz_config = os.path.join(get_package_share_directory('webots_ros2_tiago'), 'resource', 'odometry.rviz')
-    rviz = Node(
+    rviz2 = Node(
         package='rviz2',
         executable='rviz2',
         output='screen',
-        # arguments=['--display-config=' + rviz_config],
+        arguments=['--display-config=' + rviz_config.perform(None)],
         condition=IfCondition(use_rviz)
     )
 
     return LaunchDescription([
-        DeclareLaunchArgument(
-            'world',
-            default_value='apartment.wbt',
-            description='Choose one of the world files from `/create2_description/worlds` directory'
-        ),
+        # Arguments
+        world_arg,
+        use_rviz_arg,
+        # Nodes
+        rviz2,
         webots,
-        rviz
     ])
