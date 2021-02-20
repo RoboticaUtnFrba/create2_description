@@ -36,10 +36,11 @@ class iRobotCreateDriver(WebotsDifferentialDriveNode):
                 'publish_base_footprint': True,
                 'publish_robot_description': True,
             },
-            'RPLidar': {'topic_name': '/scan'},
+            'rplidar': {'topic_name': '/scan'},
             'accelerometer+gyro': {'frame_id': 'imu_link', 'topic_name': '/imu'},
-            'kinect color': {'topic_name': '/camera'},
-            'kinect range': {'topic_name': '/camera'},
+            # depth_image_proc requires both images in the same frame
+            'kinect color': {'frame_id': 'kinect_optical_frame', 'topic_name': '/camera'},
+            'kinect range': {'frame_id': 'kinect_optical_frame', 'topic_name': '/camera'},
         })
 
 

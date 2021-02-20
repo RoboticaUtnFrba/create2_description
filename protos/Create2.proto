@@ -199,6 +199,13 @@ Robot {
           ]
           type "infra-red"
         }
+        Solid {
+          translation 0 0.078 0.032
+          name "imu_link"
+          children [
+            Solid {}
+          ]
+        }
         Accelerometer {
           translation 0 0.078 0.032
         }
@@ -524,7 +531,7 @@ Robot {
                 }
           }
         ]
-        name "right wheel"
+        name "right_wheel_link"
         boundingObject DEF WHEEL_BOUNDING_OBJECT Transform {
           children [
             Shape {
@@ -563,14 +570,14 @@ Robot {
         children [
           USE WHEEL_SHAPE
         ]
-        name "left wheel"
+        name "left_wheel_link"
         boundingObject USE WHEEL_BOUNDING_OBJECT
         physics USE CREATE_WHEEL_PHYSICS
       }
     }
     DEF CREATE_REAR_WHEEL Solid {
       translation -0.081 0 0.004
-      name "rear wheel"
+      name "rear_wheel_link"
       boundingObject DEF CASTER_BOUNDING_OBJECT Sphere {
         radius 0.01
       }
@@ -581,19 +588,31 @@ Robot {
     }
     DEF CREATE_FRONT_WHEEL Solid {
       translation 0.081 0 0.004
-      name "front wheel"
+      name "front_wheel_link"
       boundingObject USE CASTER_BOUNDING_OBJECT
       physics USE CREATE_PASSIVE_WHEEL_PHYSICS
     }
+
+
     RobotisLds01 {
       rotation -1 0 0 -1.5708
       translation 0.04 0.01 0.08
-      name "RPLidar"
+      name "rplidar"
+    }
+
+    # The following solid generates a Tfs
+    # Both Kinect images has to be published to the same frame
+
+    Solid {
+      translation 0.04 0.01 0.09
+      rotation -0.577 0.577 -0.577 2.0944
+      name "kinect_optical_frame"
+      children [ Solid {} ]
     }
     Kinect {
       translation 0.04 0.01 0.09
       rotation -0.577 0.577 0.577 -2.0944
-      name "Realsense D435"
+      name "kinect"
     }
   ]
   name IS name

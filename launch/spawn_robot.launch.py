@@ -18,8 +18,7 @@
 
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
-from launch.actions import IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
@@ -38,6 +37,9 @@ def generate_launch_description():
     create_parameters = PathJoinSubstitution([package_dir, 'resource', 'irobot_create_2.yaml'])
 
 
+    # Arguments
+
+
     world_arg = DeclareLaunchArgument(
         'world',
         default_value='small_room.wbt',
@@ -49,6 +51,16 @@ def generate_launch_description():
         default_value='True',
         description='Whether to bringup RViz2 or not'
     )
+
+    gui_arg = DeclareLaunchArgument(
+        'gui',
+        default_value='True',
+        description='Whether to start Webots GUI or not.'
+    )
+
+
+    # Nodes
+
 
     webots = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -68,7 +80,7 @@ def generate_launch_description():
     rviz2 = Node(
         package='rviz2',
         executable='rviz2',
-        output='screen',
+        output='log',
         arguments=['--display-config=' + rviz_config.perform(None)],
         condition=IfCondition(use_rviz)
     )
@@ -77,6 +89,7 @@ def generate_launch_description():
         # Arguments
         world_arg,
         use_rviz_arg,
+        gui_arg,
         # Nodes
         rviz2,
         webots,
