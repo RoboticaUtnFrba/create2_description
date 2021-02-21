@@ -31,9 +31,7 @@ def generate_launch_description():
     webots_core_dir = get_package_share_directory('webots_ros2_core')
 
     world = LaunchConfiguration('world')
-    use_rviz = LaunchConfiguration('use_rviz')
 
-    rviz_config = PathJoinSubstitution([package_dir, 'resource', 'bringup.rviz'])
     create_parameters = PathJoinSubstitution([package_dir, 'resource', 'irobot_create_2.yaml'])
 
 
@@ -44,12 +42,6 @@ def generate_launch_description():
         'world',
         default_value='small_room.wbt',
         description='Choose one of the world files from `/create2_description/worlds` directory'
-    )
-
-    use_rviz_arg = DeclareLaunchArgument(
-        'use_rviz',
-        default_value='True',
-        description='Whether to bringup RViz2 or not'
     )
 
     gui_arg = DeclareLaunchArgument(
@@ -77,20 +69,11 @@ def generate_launch_description():
         }.items()
     )
 
-    rviz2 = Node(
-        package='rviz2',
-        executable='rviz2',
-        output='log',
-        arguments=['--display-config=' + rviz_config.perform(None)],
-        condition=IfCondition(use_rviz)
-    )
 
     return LaunchDescription([
         # Arguments
         world_arg,
-        use_rviz_arg,
         gui_arg,
         # Nodes
-        rviz2,
         webots,
     ])
