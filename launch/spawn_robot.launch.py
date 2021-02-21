@@ -19,11 +19,9 @@
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
-from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
 from launch.substitutions.path_join_substitution import PathJoinSubstitution
-from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -34,9 +32,7 @@ def generate_launch_description():
 
     create_parameters = PathJoinSubstitution([package_dir, 'resource', 'irobot_create_2.yaml'])
 
-
     # Arguments
-
 
     world_arg = DeclareLaunchArgument(
         'world',
@@ -50,9 +46,7 @@ def generate_launch_description():
         description='Whether to start Webots GUI or not.'
     )
 
-
     # Nodes
-
 
     webots = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
@@ -68,7 +62,6 @@ def generate_launch_description():
             'publish_tf': 'True',
         }.items()
     )
-
 
     return LaunchDescription([
         # Arguments

@@ -19,6 +19,7 @@ from webots_ros2_core.webots_differential_drive_node import WebotsDifferentialDr
 
 
 class iRobotCreateDriver(WebotsDifferentialDriveNode):
+
     def __init__(self, args):
         super().__init__(
             'create2_driver',

@@ -2,6 +2,7 @@
 
 from glob import glob
 import os
+
 from setuptools import setup
 
 package_name = 'create2_description'
@@ -15,14 +16,16 @@ data_files.append(('share/' + package_name, ['package.xml']))
 data_files.append((os.path.join('share', package_name, 'launch'), glob('launch/*.launch.py')))
 # World files
 data_files.append((os.path.join('share', package_name, 'worlds'), glob('worlds/*.wb*')))
-data_files.append((os.path.join('share', package_name, 'worlds/textures'), glob('worlds/textures/*')))
+data_files.append((os.path.join('share', package_name, 'worlds/textures'),
+                  glob('worlds/textures/*')))
 # Configuration files
 data_files.append(('share/' + package_name + '/resource', [
     'resource/irobot_create_2.yaml',
 ]))
 # Proto
 data_files.append((os.path.join('share', package_name, 'protos'), glob('protos/*.proto')))
-data_files.append((os.path.join('share', package_name, 'protos/textures'), glob('protos/textures/*.jpg')))
+data_files.append((os.path.join('share', package_name, 'protos/textures'),
+                  glob('protos/textures/*.jpg')))
 
 setup(
     name=package_name,
